@@ -41,39 +41,61 @@ function setBackgroundByWeather(condition, isDay) {
     
     // Remove all weather classes
     body.classList.remove('sunny', 'rainy', 'cloudy', 'snowy', 'night', 'stormy');
-    
+    let weatherKey = 'sunny';
+
     if (conditionText.includes('rain') || conditionText.includes('drizzle')) {
-        body.classList.add('rainy');
-        
-    } 
-    else if (conditionText.includes('cloud') || conditionText.includes('overcast')) {
-        body.classList.add('cloudy');
+        weatherKey = 'rainy';
+    } else if (conditionText.includes('cloud') || conditionText.includes('overcast')) {
+        weatherKey = 'cloudy';
+    } else if (conditionText.includes('snow') || conditionText.includes('blizzard')) {
+        weatherKey = 'snowy';
+    } else if (conditionText.includes('thunder') || conditionText.includes('storm')) {
+        weatherKey = 'stormy';
+    } else if (conditionText.includes('clear') || conditionText.includes('sunny')) {
+        weatherKey = isDay ? 'sunny' : 'night';
+    } else if (isDay === 0) {
+        weatherKey = 'night';
+    } else {
+        weatherKey = 'sunny';
     }
-    else if (conditionText.includes('snow') || conditionText.includes('blizzard')) {
-        body.classList.add('snowy');
-    }
-    else if (conditionText.includes('thunder') || conditionText.includes('storm')) {
-        body.classList.add('stormy');
-       
-    }
-    else if (conditionText.includes('clear') || conditionText.includes('sunny')) {
-        if (isDay) {
-            body.classList.add('sunny');
-         
-        } else {
-            body.classList.add('night');
+
+    body.classList.add(weatherKey);
+
+    // Activate corresponding background video (if present) and pause others
+    activateVideo(weatherKey);
+}
+
+function activateVideo(weatherKey) {
+    const videos = document.querySelectorAll('#bg-videos video');
+    if (!videos || videos.length === 0) return;
+
+    videos.forEach(v => {
+        try {
+            if (v.dataset.weather === weatherKey) {
+                // make visible and play
+                v.style.visibility = 'visible';
+                v.style.opacity = '1';
+                // attempt to play; browsers may block autoplay unless muted (we set muted)
+                v.play().catch(err => {
+                    // ignore autoplay errors; the fallback background-image will show
+                    console.warn('Video play prevented or failed:', err);
+                });
+            } else {
+                v.style.opacity = '0';
+                // pause and reset time to conserve resources
+                v.pause();
+                try { v.currentTime = 0; } catch(e) {}
+                v.style.visibility = 'hidden';
+            }
+        } catch (e) {
+            console.error('Error activating video:', e);
         }
-    }
-    else if (isDay === 0) {
-        body.classList.add('night');
-    }
-    else {
-        body.classList.add('sunny');
-    }
-    
+    });
 }
 
 // Set initial background on page load
 document.addEventListener('DOMContentLoaded', function() {
     document.body.classList.add('sunny');
+    // Ensure initial video is activated if available
+    activateVideo('sunny');
 });
