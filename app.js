@@ -48,15 +48,19 @@ function searchWeather() {
             document.getElementById("modal-flag").innerHTML = "";
           }
 
-          if (c.coatOfArms && c.coatOfArms.svg ) {
-            console.log("Coat of arms found:", c.coatOfArms.png);
-            document.getElementById(
-              "modal-symbol"
-            ).innerHTML = `<img crossorigin="anonymous" src="${c.coatOfArms.svg}" alt="symbol" style="max-width:80px;height:auto;">`;
-          } else {
-            console.warn("No coat of arms found for country");
-            document.getElementById("modal-symbol").innerHTML = "<p style='font-size:0.9rem;color:#999;'>No coat of arms available</p>";
-          }
+           if (data.coatOfArms && (coatOfArms.png || coatOfArms.svg)) {
+      const coatUrl = coatOfArms.png || coatOfArms.svg;
+      console.log("Coat of arms found:", coatUrl);
+
+      document.getElementById("modal-symbol").innerHTML =
+        `<img src="${coatUrl}" 
+              alt="coat of arms"
+              style="max-width:120px; height:auto;">`;
+    } else {
+      console.warn("No coat of arms found for this country");
+      document.getElementById("modal-symbol").innerHTML =
+        `<p class="text-muted">No coat of arms available</p>`;
+    
           document.getElementById("modal-officialName").innerText =
             (c.name && c.name.official) || "-";
           document.getElementById("modal-nativeName").innerText =
@@ -88,7 +92,8 @@ function searchWeather() {
               extractFlagColorsAndApplyToModal(c.flags.png);
             }, 100);
           }
-        });
+        }
+    });
 
       setBackgroundByWeather(data.current.condition.text, data.current.is_day);
     })
