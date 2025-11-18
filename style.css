@@ -1,11 +1,9 @@
-/* Global reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Page background and behaviour */
 body {
   min-height: 100vh;
   padding: 40px 20px;
@@ -20,43 +18,13 @@ body {
   background: none !important;
 }
 
-/* Weather-based background colors (fallbacks when videos don't load) */
-body.sunny {
-  background-image: url('https://images.pexels.com/photos/209831/pexels-photo-209831.jpeg?auto=compress&cs=tinysrgb&w=1200') !important;
-  background-color: #87CEEB !important;
-}
 
-body.rainy {
-  background-image: url('https://images.pexels.com/photos/1618606/pexels-photo-1618606.jpeg?auto=compress&cs=tinysrgb&w=1200') !important;
-  background-color: #4a5f7f !important;
-}
 
-body.cloudy {
-  background-image: url('https://images.pexels.com/photos/3962286/pexels-photo-3962286.jpeg?auto=compress&cs=tinysrgb&w=1200') !important;
-  background-color: #9ca3af !important;
-}
-
-body.snowy {
-  background-image: url('https://images.pexels.com/photos/399161/pexels-photo-399161.jpeg?auto=compress&cs=tinysrgb&w=1200') !important;
-  background-color: #e0e7ff !important;
-}
-
-body.night {
-  background-image: url('https://images.pexels.com/photos/87651/pexels-photo-87651.jpeg?auto=compress&cs=tinysrgb&w=1200') !important;
-  background-color: #1a1f3a !important;
-}
-
-body.stormy {
-  background-image: url('https://images.pexels.com/photos/3945680/pexels-photo-3945680.jpeg?auto=compress&cs=tinysrgb&w=1200') !important;
-  background-color: #2c3e50 !important;
-}
-
-/* Video background wrapper (videos are preferred; images above are fallbacks) */
 #bg-videos {
   position: fixed;
-  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  inset: 0; 
   overflow: hidden;
-  z-index: -2; /* behind overlay pseudo-elements */
+  z-index: -2; 
   pointer-events: none;
   background: transparent !important;
 }
@@ -76,16 +44,14 @@ body.stormy {
   transition: opacity 0.8s ease-in-out, visibility 0.2s;
 }
 
-/* When JS sets style.opacity = 1 the video will become visible and play */
 
 .weather-container {
   max-width: 650px;
   margin: 0 auto;
 }
 
-/* GLASS CARD: search-card */
 .search-card {
-  background: rgba(255, 255, 255, 0.10); /* subtle translucent */
+  background: rgba(255, 255, 255, 0.10); 
   border-radius: 18px;
   padding: 28px;
   box-shadow: 0 8px 40px rgba(12, 12, 30, 0.5);
@@ -93,7 +59,7 @@ body.stormy {
   backdrop-filter: blur(10px) saturate(120%);
   -webkit-backdrop-filter: blur(10px) saturate(120%);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #fff; /* light text for contrast on videos */
+  color: #fff; 
 }
 
 h1.app-title {
@@ -155,7 +121,6 @@ h1.app-title {
 
 .btn-search:active { transform: translateY(-1px); }
 
-/* GLASS CARD: main weather card */
 .weather-card {
   background: rgba(255, 255, 255, 0.08);
   border-radius: 18px;
@@ -221,7 +186,6 @@ h1.app-title {
 
 #region, #country { color: rgba(255,255,255,0.85); font-size: 1rem; font-weight: 500; margin: 0; display: inline; }
 
-/* Responsive tweaks */
 @media (max-width: 768px) {
   .search-card { padding: 18px; }
   .weather-card { padding: 28px 18px; }
@@ -231,7 +195,6 @@ h1.app-title {
   #name { font-size: 1.25rem; }
 }
 
-/* Modal styling */
 .modal-content {
   background: rgba(255, 255, 255, 0.95) !important;
   border: 2px solid rgba(0, 0, 0, 0.2) !important;
