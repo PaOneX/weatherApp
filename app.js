@@ -273,3 +273,4 @@ function applyModalBackgroundGradient(colors) {
         }
     `;
 }
+
