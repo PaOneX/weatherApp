@@ -1,206 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather App</title>
-    <link rel="stylesheet" href="bootstrap.css" />
-    <link rel="icon" href="download (1).jpeg" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard - Modern Glass UI</title>
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="icon" href="download (1).jpeg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Videos -->
     <div id="bg-videos" aria-hidden="true">
-      <video
-        data-weather="sunny"
-        muted
-        loop
-        playsinline
-        preload="auto"
-        src="videos/sunny.mp4"
-      ></video>
-      <video
-        data-weather="rainy"
-        muted
-        loop
-        playsinline
-        preload="auto"
-        src="videos/rainy.mp4"
-      ></video>
-      <video
-        data-weather="cloudy"
-        muted
-        loop
-        playsinline
-        preload="auto"
-        src="videos/cloudy.mp4"
-      ></video>
-      <video
-        data-weather="snowy"
-        muted
-        loop
-        playsinline
-        preload="auto"
-        src="videos/snowy.mp4"
-      ></video>
-      <video
-        data-weather="night"
-        muted
-        loop
-        playsinline
-        preload="auto"
-        src="videos/night.mp4"
-      ></video>
-      <video
-        data-weather="stormy"
-        muted
-        loop
-        playsinline
-        preload="auto"
-        src="videos/stormy.mp4"
-      ></video>
+        <video data-weather="sunny" muted loop playsinline preload="auto" src="videos/sunny.mp4"></video>
+        <video data-weather="rainy" muted loop playsinline preload="auto" src="videos/rainy.mp4"></video>
+        <video data-weather="cloudy" muted loop playsinline preload="auto" src="videos/cloudy.mp4"></video>
+        <video data-weather="snowy" muted loop playsinline preload="auto" src="videos/snowy.mp4"></video>
+        <video data-weather="night" muted loop playsinline preload="auto" src="videos/night.mp4"></video>
+        <video data-weather="stormy" muted loop playsinline preload="auto" src="videos/stormy.mp4"></video>
     </div>
+
     <div class="container">
-      <div class="weather-container">
-        <div class="search-card">
-          <h1 class="app-title">
-            <i class="fas fa-cloud-sun"></i> Weather App
-          </h1>
-          <div class="search-box">
-            <input type="text" id="cityName" placeholder="Enter city name..." />
-            <button class="btn btn-search" onclick="searchWeather();">
-              <i class="fas fa-search"></i> Search
-            </button>
-          </div>
+        <!-- Search Section -->
+        <div class="search-section glass-effect">
+            <div class="glass-shine"></div>
+            <h1 class="app-title">
+                <i class="fas fa-cloud-sun-rain icon-gradient"></i>
+                <span class="title-text">Weather Dashboard</span>
+            </h1>
+            <p class="app-subtitle">Get real-time weather information for any city worldwide</p>
+            <div class="search-box">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-map-marker-alt search-icon"></i>
+                    <input type="text" id="cityName" placeholder="Enter city name..." onkeypress="if(event.key==='Enter') searchWeather()">
+                </div>
+                <button class="btn btn-search" onclick="searchWeather()">
+                    <i class="fas fa-search"></i>
+                    <span>Search</span>
+                </button>
+            </div>
         </div>
 
-        <div class="card weather-card" id="div1">
-          <div class="card-body">
-            <div class="weather-main">
-              <div class="row align-items-center justify-content-center">
-                <div class="col-12">
-                  <h1 id="condition"></h1>
+        <!-- Weather Results - Initially Hidden -->
+        <div id="weatherResults" style="display: none;">
+            
+            <!-- Main Weather Display -->
+            <div class="main-weather glass-effect">
+                <div class="glass-shine"></div>
+                <div class="weather-display">
+                    <div class="location-header">
+                        <div class="location-info-top">
+                            <h2 id="cityName-display"></h2>
+                            <p id="location-details"></p>
+                        </div>
+                        <div class="time-info">
+                            <i class="far fa-clock"></i>
+                            <span id="localTime"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-current">
+                        <div class="weather-left">
+                            <div class="weather-icon-large" id="weatherIcon"></div>
+                            <h3 id="conditionText"></h3>
+                        </div>
+                        <div class="weather-right">
+                            <div class="temperature-large" id="temperature"></div>
+                            <div class="feels-like">Feels like <span id="feelsLike"></span></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12">
-                  <div id="icon"></div>
-                </div>
-                <div class="col-12">
-                  <h1 id="temp_c"></h1>
-                </div>
-                <div class="col-12">
-                  <div id="date"></div>
-                </div>
-              </div>
             </div>
 
-            <div class="location-info">
-              <div class="location-item">
-                <i class="fas fa-map-marker-alt"></i>
-                <h1 id="name"></h1>
-              </div>
-              <div class="location-item">
-                <h1 id="region"></h1>
-              </div>
-              <div class="location-item">
-                <i class="fas fa-flag"></i>
-                <h1 id="country"></h1>
-              </div>
-            </div>
-          </div>
+            <!-- Weather Details Grid -->
+            <div class="weather-grid">
+                <div class="weather-card glass-effect">
+                    <div class="glass-shine"></div>
+                    <div class="card-icon"><i class="fas fa-wind"></i></div>
+                    <div class="card-label">Wind Speed</div>
+                    <div class="card-value" id="windSpeed"></div>
+                    <div class="card-sub" id="windDir"></div>
+                </div>
 
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-          >
-            Open Country Details
-          </button>
+                <div class="weather-card glass-effect">
+                    <div class="glass-shine"></div>
+                    <div class="card-icon"><i class="fas fa-tint"></i></div>
+                    <div class="card-label">Humidity</div>
+                    <div class="card-value" id="humidity"></div>
+                </div>
+
+                <div class="weather-card glass-effect">
+                    <div class="glass-shine"></div>
+                    <div class="card-icon"><i class="fas fa-gauge-high"></i></div>
+                    <div class="card-label">Pressure</div>
+                    <div class="card-value" id="pressure"></div>
+                </div>
+
+                <div class="weather-card glass-effect">
+                    <div class="glass-shine"></div>
+                    <div class="card-icon"><i class="fas fa-eye"></i></div>
+                    <div class="card-label">Visibility</div>
+                    <div class="card-value" id="visibility"></div>
+                </div>
+
+                <div class="weather-card glass-effect">
+                    <div class="glass-shine"></div>
+                    <div class="card-icon"><i class="fas fa-cloud"></i></div>
+                    <div class="card-label">Cloud Cover</div>
+                    <div class="card-value" id="cloud"></div>
+                </div>
+
+                <div class="weather-card glass-effect">
+                    <div class="glass-shine"></div>
+                    <div class="card-icon"><i class="fas fa-sun"></i></div>
+                    <div class="card-label">UV Index</div>
+                    <div class="card-value" id="uv"></div>
+                </div>
+
+                <div class="weather-card glass-effect">
+                    <div class="glass-shine"></div>
+                    <div class="card-icon"><i class="fas fa-droplet"></i></div>
+                    <div class="card-label">Precipitation</div>
+                    <div class="card-value" id="precip"></div>
+                </div>
+
+                 <div class="weather-card glass-effect">
+                    <div class="glass-shine"></div>
+                    <div class="card-icon"><i class="fas fa-temperature-half"></i></div>
+                    <div class="card-label">Dew Point</div>
+                    <div class="card-value" id="dewpoint"></div>
+                </div>
+            </div>
+
+            <!-- Country Information Section -->
+            <div class="country-section glass-effect">
+                <div class="glass-shine"></div>
+                <h2 class="section-title">
+                    <i class="fas fa-globe-americas"></i>
+                    Country Information
+                </h2>
+                <div class="country-content">
+                    <div class="country-header">
+                        <div id="countryFlag" class="country-flag"></div>
+                        <div class="country-main-info">
+                            <h3 id="countryName"></h3>
+                            <p id="countryCapital"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="country-details-grid">
+                        <div class="country-detail">
+                            <i class="fas fa-signature"></i>
+                            <div>
+                                <span class="detail-label">Official Name</span>
+                                <span class="detail-value" id="officialName">-</span>
+                            </div>
+                        </div>
+                        <div class="country-detail">
+                            <i class="fas fa-language"></i>
+                            <div>
+                                <span class="detail-label">Languages</span>
+                                <span class="detail-value" id="languages">-</span>
+                            </div>
+                        </div>
+                        <div class="country-detail">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <span class="detail-label">Population</span>
+                                <span class="detail-value" id="population">-</span>
+                            </div>
+                        </div>
+                        <div class="country-detail">
+                            <i class="fas fa-map"></i>
+                            <div>
+                                <span class="detail-label">Region</span>
+                                <span class="detail-value" id="regionCountry">-</span>
+                            </div>
+                        </div>
+                        <div class="country-detail">
+                            <i class="fas fa-dollar-sign"></i>
+                            <div>
+                                <span class="detail-label">Currency</span>
+                                <span class="detail-value" id="currency">-</span>
+                            </div>
+                        </div>
+                        <div class="country-detail">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <span class="detail-label">Timezone</span>
+                                <span class="detail-value" id="timezoneCountry">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-      </div>
-
-      
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Country Details</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="container my-4">
-          <div class="row justify-content-center">
-            <div class="col-12 col-md-10 col-lg-8">
-              <div class="card card-compact">
-                <div class="card-body text-center">
-                  <div id="modal-flag" class="mb-2 p-2 d-flex justify-content-center align-content-center"></div> 
-                  <div id="modal-symbol" ></div> 
-                  <h4 id="modal-name" class="card-title">
-                    Select a country to view details
-                  </h4>
-                  <hr />
-                  <div class="text-start">
-                    <div>
-                      <span class="detail-label">Official Name</span>
-                      <span id="modal-officialName" class="detail-value">-</span>
-                    </div>
-                    <div>
-                      <span class="detail-label">Native Name</span>
-                      <span id="modal-nativeName" class="detail-value">-</span>
-                    </div>
-                    <div>
-                      <span class="detail-label">Capital</span>
-                      <span id="modal-capital" class="detail-value">-</span>
-                    </div>
-                    <div>
-                      <span class="detail-label">Region</span>
-                      <span id="modal-region" class="detail-value">-</span>
-                    </div>
-                    <div>
-                      <span class="detail-label">Area</span>
-                      <span id="modal-area" class="detail-value">-</span>
-                    </div>
-                    <div>
-                      <span class="detail-label">Population</span>
-                      <span id="modal-population" class="detail-value">-</span>
-                    </div>
-                    <div>
-                      <span class="detail-label">Continent</span>
-                      <span id="modal-continent" class="detail-value">-</span>
-                    </div>
-                    <div>
-                      <span class="detail-label">Currency</span>
-                      <span id="modal-currency" class="detail-value">-</span>
-                    </div>
-                    <div>
-                      <span class="detail-label">Languages</span>
-                      <span id="modal-language" class="detail-value">-</span>
-                    </div>
-                    <div>
-                      <span class="detail-label">Time Zone</span>
-                      <span id="modal-timeZone" class="detail-value">-</span>
-                    </div>
-                  
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>      
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
     </div>
-  </div>
-</div>
 
-    </div>
     <script src="app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+</body>
 </html>

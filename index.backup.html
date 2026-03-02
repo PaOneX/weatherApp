@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App - Modern Glass UI</title>
+    <link rel="stylesheet" href="bootstrap.css" />
+    <link rel="icon" href="download (1).jpeg" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2.0" type="text/css" />
+  </head>
+  <body>
+    <div id="bg-videos" aria-hidden="true">
+      <video
+        data-weather="sunny"
+        muted
+        loop
+        playsinline
+        preload="auto"
+        src="videos/sunny.mp4"
+      ></video>
+      <video
+        data-weather="rainy"
+        muted
+        loop
+        playsinline
+        preload="auto"
+        src="videos/rainy.mp4"
+      ></video>
+      <video
+        data-weather="cloudy"
+        muted
+        loop
+        playsinline
+        preload="auto"
+        src="videos/cloudy.mp4"
+      ></video>
+      <video
+        data-weather="snowy"
+        muted
+        loop
+        playsinline
+        preload="auto"
+        src="videos/snowy.mp4"
+      ></video>
+      <video
+        data-weather="night"
+        muted
+        loop
+        playsinline
+        preload="auto"
+        src="videos/night.mp4"
+      ></video>
+      <video
+        data-weather="stormy"
+        muted
+        loop
+        playsinline
+        preload="auto"
+        src="videos/stormy.mp4"
+      ></video>
+    </div>
+    <div class="container">
+      <div class="weather-container">
+        <div class="search-card glass-effect">
+          <div class="glass-shine"></div>
+          <h1 class="app-title">
+            <i class="fas fa-cloud-sun-rain icon-gradient"></i>
+            <span class="title-text">Weather</span>
+          </h1>
+          <p class="app-subtitle">Discover weather conditions worldwide</p>
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-map-marker-alt search-icon"></i>
+              <input type="text" id="cityName" placeholder="Search for a city..." />
+            </div>
+            <button class="btn btn-search" onclick="searchWeather();">
+              <i class="fas fa-search"></i>
+              <span>Search</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card weather-card glass-effect" id="div1">
+          <div class="glass-shine"></div>
+          <div class="card-body">
+            <div class="weather-main">
+              <div class="weather-badge" id="condition"></div>
+              <div class="weather-icon-container">
+                <div id="icon"></div>
+              </div>
+              <div class="temperature-display">
+                <h1 id="temp_c"></h1>
+              </div>
+              <div class="weather-meta">
+                <i class="far fa-clock"></i>
+                <span id="date"></span>
+              </div>
+            </div>
+
+            <div class="divider-line"></div>
+
+            <div class="location-info">
+              <div class="location-card">
+                <div class="location-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="location-details">
+                  <div class="location-city" id="name"></div>
+                  <div class="location-region">
+                    <span id="region"></span>
+                    <span class="separator">•</span>
+                    <span id="country"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-details glass-button"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              <i class="fas fa-info-circle"></i>
+              <span>View Country Details</span>
+              <i class="fas fa-arrow-right arrow-icon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+ modal-dialog-centered">
+    <div class="modal-content glass-modal">
+      <div class="glass-shine"></div>
+      <div class="modal-header">
+        <h1 class="modal-title" id="exampleModalLabel">
+          <i class="fas fa-globe-americas"></i>
+          Country Information
+        </h1>
+        <button type="button" class="btn-close glass
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="moduntry-info-wrapper">
+          <div class="flag-section">
+            <div id="modal-flag" class="flag-display"></div> 
+            <div id="modal-symbol" class="symbol-display"></div> 
+          </div>
+          
+          <h4 id="modal-name" class="country-name">Select a country to view details</h4>
+          
+          <div class="info-grid">
+            <div class="info-item">
+              <i class="fas fa-signature"></i>
+              <div class="info-content">
+                <span class="info-label">Official Name</span>
+                <span id="modal-officialName" class="info-value">-</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-language"></i>
+              <div class="info-content">
+                <span class="info-label">Native Name</span>
+                <span id="modal-nativeName" class="info-value">-</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-city"></i>
+              <div class="info-content">
+                <span class="info-label">Capital</span>
+                <span id="modal-capital" class="info-value">-</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-map"></i>
+              <div class="info-content">
+                <span class="info-label">Region</span>
+                <span id="modal-region" class="info-value">-</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-ruler-combined"></i>
+              <div class="info-content">
+                <span class="info-label">Area</span>
+                <span id="modal-area" class="info-value">-</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-users"></i>
+              <div class="info-content">
+                <span class="info-label">Population</span>
+                <span id="modal-population" class="info-value">-</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-globe"></i>
+              <div class="info-content">
+                <span class="info-label">Continent</span>
+                <span id="modal-continent" class="info-value">-</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-dollar-sign"></i>
+              <div class="info-content">
+                <span class="info-label">glass-button-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times"></i>
+          Close
+        
+                <span id="modal-currency" class="info-value">-</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-comment"></i>
+              <div class="info-content">
+                <span class="info-label">Languages</span>
+                <span id="modal-language" class="info-value">-</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-clock"></i>
+              <div class="info-content">
+                <span class="info-label">Time Zone</span>
+                <span id="modal-timeZone" class="info-value">-</span 
+                  <span id="modal-timeZone" class="detail-value">-</span>
+                    </div>
+                  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+      <div class="modal-footer">
+        <button type="button" class="btn glass-button-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times"></i>
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js?v=2.0" defer></script>
+  </body>
+</html>

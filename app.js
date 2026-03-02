@@ -1,276 +1,239 @@
+// Search Weather Function
 function searchWeather() {
-  //    console.log("Button clicked! Searching for weather...");
-
-  let cityName = document.getElementById("cityName").value;
+  const cityName = document.getElementById("cityName").value.trim();
 
   if (!cityName) {
     alert("Please enter a city name");
     return;
   }
 
-  fetch(
-    `http://api.weatherapi.com/v1/current.json?key=18c575faf6fd4df29b190236251211&q=${cityName}`
-  )
-    .then((res) => res.json())
-    .then((data) => {
+  // Show loading state (check if element exists)
+  const weatherResults = document.getElementById("weatherResults");
+  if (weatherResults) {
+    weatherResults.style.display = "none";
+  }
+
+  // Fetch weather data
+  fetch(`https://api.weatherapi.com/v1/current.json?key=18c575faf6fd4df29b190236251211&q=${cityName}`)
+    .then(res => res.json())
+    .then(data => {
       if (data.error) {
-        alert("City not found!");
+        alert("City not found! Please try another city.");
         return;
       }
-      console.log(data);
-      document.getElementById("name").innerText = data.location.name;
-      document.getElementById("region").innerText = data.location.region;
-      document.getElementById("country").innerText = data.location.country;
-      document.getElementById("temp_c").innerText = data.current.temp_c + " °C";
-      document.getElementById("condition").innerText =
-        data.current.condition.text;
-      document.getElementById(
-        "icon"
-      ).innerHTML = `<img src="${data.current.condition.icon}" alt="Weather Icon">`;
-      document.getElementById("date").innerText = data.current.last_updated;
 
-      fetch(`https://restcountries.com/v3.1/name/${data.location.country}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const c = data[0] || {};
-          console.log("Full country data:", c);
-          console.log("Coat of arms object:", c.coatOfArms);
-          
-          document.getElementById("modal-name").innerText =
-            (c.name && c.name.common) || "-";
-          if (c.flags && c.flags.png) {
-            console.log("Flag found:", c.flags.png);
-            document.getElementById(
-              "modal-flag"
-            ).innerHTML = `<img crossorigin="anonymous" src="${c.flags.png}" alt="flag" style="max-width:100%;height:auto;">`;
-          } else {
-            console.warn("No flag found for country");
-            document.getElementById("modal-flag").innerHTML = "";
-          }
-
-           if (data.coatOfArms && (coatOfArms.png || coatOfArms.svg)) {
-      const coatUrl = coatOfArms.png || coatOfArms.svg;
-      console.log("Coat of arms found:", coatUrl);
-
-      document.getElementById("modal-symbol").innerHTML =
-        `<img src="${coatUrl}" 
-              alt="coat of arms"
-              style="max-width:120px; height:auto;">`;
-    } else {
-      console.warn("No coat of arms found for this country");
-      document.getElementById("modal-symbol").innerHTML =
-        `<p class="text-muted">No coat of arms available</p>`;
-    
-          document.getElementById("modal-officialName").innerText =
-            (c.name && c.name.official) || "-";
-          document.getElementById("modal-nativeName").innerText =
-            (c.name &&
-              c.name.nativeName &&
-              Object.values(c.name.nativeName)[0] &&
-              Object.values(c.name.nativeName)[0].official) ||
-            "-";
-          document.getElementById("modal-capital").innerText =
-            (c.capital && c.capital[0]) || "-";
-          document.getElementById("modal-region").innerText = c.region || "-";
-          document.getElementById("modal-area").innerText = c.area || "-";
-          document.getElementById("modal-population").innerText = c.population
-            ? c.population.toLocaleString()
-            : "-";
-          document.getElementById("modal-continent").innerText =
-            (c.continents && c.continents[0]) || "-";
-          document.getElementById("modal-currency").innerText = c.currencies
-            ? Object.keys(c.currencies)[0]
-            : "-";
-          document.getElementById("modal-language").innerText = c.languages
-            ? Object.values(c.languages).join(", ")
-            : "-";
-          document.getElementById("modal-timeZone").innerText =
-            (c.timezones && c.timezones[0]) || "-";
-
-          if (c.flags && c.flags.png) {
-            setTimeout(() => {
-              extractFlagColorsAndApplyToModal(c.flags.png);
-            }, 100);
-          }
-        }
-    });
-
+      console.log("Weather Data:", data);
+      
+      // Display all weather data
+      displayWeatherData(data);
+      
+      // Fetch country data
+      fetchCountryData(data.location.country);
+      
+      // Show results (check if element exists)
+      const weatherResults = document.getElementById("weatherResults");
+      if (weatherResults) {
+        weatherResults.style.display = "block";
+        
+        // Smooth scroll to results
+        setTimeout(() => {
+          weatherResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+      }
+      
+      // Set background by weather condition
       setBackgroundByWeather(data.current.condition.text, data.current.is_day);
     })
-    .catch((error) => {
+    .catch(error => {
       console.error("Error fetching weather:", error);
-      alert("Error fetching weather data!");
+      alert("Error fetching weather data! Please try again.");
     });
 }
 
+// Display All Weather Data
+function displayWeatherData(data) {
+  conHelper function to safely set element content
+  const setElement = (id, content) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = content;
+  };
+  
+  const setHTML = (id, html) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  };
+  
+  // Location Information
+  setElement("cityName-display", location.name);
+  setElement("location-details", `${location.region}, ${location.country}`);
+  setElement("localTime", new Date(location.localtime).toLocaleString('en-US', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  }));
+  
+  // Main Weather
+  setHTML("weatherIcon", `<img src="https:${current.condition.icon}" alt="${current.condition.text}">`);
+  setElement("conditionText", current.condition.text);
+  setElement("temperature", `${Math.round(current.temp_c)}°C`);
+  setElement("feelsLike", `${Math.round(current.feelslike_c)}°C`);
+  
+  // Weather Details
+  setElement("windSpeed", `${current.wind_kph} km/h`);
+  setElement("windDir", `${current.wind_dir} | ${current.wind_degree}°`);
+  setElement("humidity", `${current.humidity}%`);
+  setElement("pressure", `${current.pressure_mb} mb`);
+  setElement("visibility", `${current.vis_km} km`);
+  setElement("cloud", `${current.cloud}%`);
+  setElement("uv", getUVLevel(current.uv));
+  setElement("precip", `${current.precip_mm} mm`);
+  
+  // Calculate dew point (approximation formula)
+  const dewPoint = calculateDewPoint(current.temp_c, current.humidity);
+  setElement("dewpoint", `${dewPoint}°C`)
+  // Calculate dew point (approximation formula)
+  const dewPoint = calculateDewPoint(current.temp_c, current.humidity);
+  document.getElementById("dewpoint").textContent = `${dewPoint}°C`;
+}
+
+// Calculate Dew Point
+function calculateDewPoint(temp, humidity) {
+  const a = 17.27;
+  const b = 237.7;
+  const alpha = ((a * temp) / (b + temp)) + Math.log(humidity / 100);
+  const dewPoint = (b * alpha) / (a - alpha);
+  return Math.round(dewPoint * 10) / 10;
+}
+
+// Get UV Level Description
+function getUVLevel(uv) {
+  if (uv <= 2) return `${uv} - Low`;
+  if (uv <= 5) return `${uv} - Moderate`;
+  if (uv <= 7) return `${uv} - High`;
+  if (uv <= 10) return `${uv} - Very High`;
+  return `${uv} - Extreme`;
+}
+
+// Fetch Country Data
+function fetchCountryData(countryName) {
+  fetch(`https://restcountries.com/v3.1/name/${countryName}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data && data[0]) {
+        displayCountryData(data[0]);
+      }
+    })
+    .catch(error => {
+     Helper function to safely set element content
+  const setElement = (id, content) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = content;
+  };
+  
+  const setHTML = (id, html) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  };
+  
+  // Flag
+  if (country.flags && country.flags.png) {
+    setHTML("countryFlag", `<img src="${country.flags.png}" alt="${country.name.common} flag">`);
+  }
+  
+  // Main Info
+  setElement("countryName", country.name.common || "-");
+  setElement("countryCapital", (country.capital && country.capital[0]) ? `Capital: ${country.capital[0]}` : "No capital information");
+  
+  // Details
+  setElement("officialName", country.name.official || "-");
+  setElement("languages", country.languages ? Object.values(country.languages).join(", ") : "-");
+  setElement("population", country.population ? country.population.toLocaleString() : "-");
+  setElement("regionCountry", country.region || "-");
+  setElement("currency", country.currencies ? Object.keys(country.currencies).join(", ") + ` (${Object.values(country.currencies)[0]?.name || ""})` : "-");
+  setElement("timezoneCountry", (country.timezones && country.timezones[0]) || "-")
+  // Main Info
+  document.getElementById("countryName").textContent = country.name.common || "-";
+  document.getElementById("countryCapital").textContent = (country.capital && country.capital[0]) ? `Capital: ${country.capital[0]}` : "No capital information";
+  
+  // Details
+  document.getElementById("officialName").textContent = country.name.official || "-";
+  document.getElementById("languages").textContent = country.languages ? Object.values(country.languages).join(", ") : "-";
+  document.getElementById("population").textContent = country.population ? country.population.toLocaleString() : "-";
+  document.getElementById("regionCountry").textContent = country.region || "-";
+  document.getElementById("currency").textContent = country.currencies ? Object.keys(country.currencies).join(", ") + ` (${Object.values(country.currencies)[0]?.name || ""})` : "-";
+  document.getElementById("timezoneCountry").textContent = (country.timezones && country.timezones[0]) || "-";
+}
+
+// Set Background by Weather
 function setBackgroundByWeather(condition, isDay) {
-  const body = document.body;
   const conditionText = condition.toLowerCase();
-
-  console.log("Setting background for:", conditionText, "IsDay:", isDay);
-
-  body.classList.remove("sunny", "rainy", "cloudy", "snowy", "night", "stormy");
   let weatherKey = "sunny";
 
   if (conditionText.includes("rain") || conditionText.includes("drizzle")) {
     weatherKey = "rainy";
-  } else if (
-    conditionText.includes("cloud") ||
-    conditionText.includes("overcast")
-  ) {
+  } else if (conditionText.includes("cloud") || conditionText.includes("overcast") || conditionText.includes("mist") || conditionText.includes("fog")) {
     weatherKey = "cloudy";
-  } else if (
-    conditionText.includes("snow") ||
-    conditionText.includes("blizzard")
-  ) {
+  } else if (conditionText.includes("snow") || conditionText.includes("blizzard") || conditionText.includes("sleet")) {
     weatherKey = "snowy";
-  } else if (
-    conditionText.includes("thunder") ||
-    conditionText.includes("storm")
-  ) {
+  } else if (conditionText.includes("thunder") || conditionText.includes("storm")) {
     weatherKey = "stormy";
-  } else if (
-    conditionText.includes("clear") ||
-    conditionText.includes("sunny")
-  ) {
+  } else if (conditionText.includes("clear") || conditionText.includes("sunny")) {
     weatherKey = isDay ? "sunny" : "night";
   } else if (isDay === 0) {
     weatherKey = "night";
-  } else {
-    weatherKey = "sunny";
   }
 
-  body.classList.add(weatherKey);
-
+  console.log("Setting weather background:", weatherKey);
   activateVideo(weatherKey);
 }
 
+// Activate Video Background
 function activateVideo(weatherKey) {
   const videos = document.querySelectorAll("#bg-videos video");
-  if (!videos || videos.length === 0) return;
-
-  videos.forEach((v) => {
-    try {
-      if (v.dataset.weather === weatherKey) {
-        v.style.visibility = "visible";
-        v.style.opacity = "1";
-        v.play().catch((err) => {
-          console.warn("Video play prevented or failed:", err);
-        });
-      } else {
-        v.style.opacity = "0";
-        v.pause();
-        try {
-          v.currentTime = 0;
-        } catch (e) {}
-        v.style.visibility = "hidden";
+  
+  videos.forEach(video => {
+    if (video.dataset.weather === weatherKey) {
+  const cityInput = document.getElementById("cityName");
+  if (cityInput) {
+    cityInput.value = "";
+    
+    // Allow Enter key to search
+    cityInput.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        searchWeather();
       }
-    } catch (e) {
-      console.error("Error activating video:", e);
-    }
-  });
+    });
+  }
+  
+  // Optional: Load a default city
+  // setTimeout(() => {
+  //   if (cityInput) cityInput.value = "London";
+  //   searchWeather();
+  // }, 500););
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  document.body.classList.add("sunny");
+// Initialize on page load
+document.addEventListener("DOMContentLoaded", function() {
+  // Set default background
   activateVideo("sunny");
+  
+  // Clear input on load
+  document.getElementById("cityName").value = "";
+  
+  // Optional: Load a default city
+  // setTimeout(() => {
+  //   document.getElementById("cityName").value = "London";
+  //   searchWeather();
+  // }, 500);
 });
 
-function extractFlagColorsAndApplyToModal(flagUrl) {
-  console.log("Extracting colors from flag:", flagUrl);
-  const flagImg = new Image();
-  flagImg.crossOrigin = "anonymous";
-
-  flagImg.onload = function () {
-    console.log("Flag image loaded, extracting colors...");
-    try {
-      const canvas = document.createElement("canvas");
-      canvas.width = flagImg.width;
-      canvas.height = flagImg.height;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(flagImg, 0, 0);
-
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const pixels = imageData.data;
-
-      const colorMap = {};
-
-      for (let i = 0; i < pixels.length; i += 40) {
-        const r = pixels[i];
-        const g = pixels[i + 1];
-        const b = pixels[i + 2];
-        const a = pixels[i + 3];
-
-        if (
-          a < 125 ||
-          (r > 240 && g > 240 && b > 240) ||
-          (r < 15 && g < 15 && b < 15)
-        )
-          continue;
-
-        const key = `${Math.floor(r / 10) * 10},${Math.floor(g / 10) * 10},${
-          Math.floor(b / 10) * 10
-        }`;
-        colorMap[key] = (colorMap[key] || 0) + 1;
-      }
-
-      const sortedColors = Object.entries(colorMap)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 3)
-        .map(([color]) => {
-          const [r, g, b] = color.split(",").map(Number);
-          return { r, g, b };
-        });
-
-      console.log("Extracted colors:", sortedColors);
-
-      if (sortedColors.length > 0) {
-        applyModalBackgroundGradient(sortedColors);
-      }
-    } catch (e) {
-      console.warn("Could not extract colors from flag (canvas error):", e);
-    }
-  };
-
-  flagImg.onerror = function () {
-    console.warn("Failed to load flag image:", flagUrl);
-  };
-
-  flagImg.src = flagUrl;
-}
-
-function applyModalBackgroundGradient(colors) {
-  console.log("Applying modal background gradient with colors:", colors);
-
-  const modalContent = document.querySelector(".modal-content");
-
-  if (!modalContent) {
-    console.warn("Modal content element not found");
-    return;
+// Allow Enter key to search
+document.getElementById("cityName")?.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    searchWeather();
   }
-
-  const [c1, c2 = c1, c3 = c1] = colors;
-
-  let styleTag = document.getElementById("modal-gradient-style");
-  if (!styleTag) {
-    styleTag = document.createElement("style");
-    styleTag.id = "modal-gradient-style";
-    document.head.appendChild(styleTag);
-  }
-
-  const gradient = `linear-gradient(135deg, rgba(${c1.r}, ${c1.g}, ${c1.b}, 0.25) 0%, rgba(${c2.r}, ${c2.g}, ${c2.b}, 0.15) 50%, rgba(${c3.r}, ${c3.g}, ${c3.b}, 0.1) 100%)`;
-
-  console.log("Applying gradient:", gradient);
-  console.log("RGB values - c1:", c1, "c2:", c2, "c3:", c3);
-
-  styleTag.textContent = `
-        .modal-content {
-            background: ${gradient} !important;
-            border-color: rgba(${c1.r}, ${c1.g}, ${c1.b}, 0.5) !important;
-        }
-        .modal-body {
-            background: ${gradient} !important;
-        }
-    `;
-}
+});
 
