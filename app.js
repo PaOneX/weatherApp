@@ -1,4 +1,3 @@
-// Search Weather Function
 function searchWeather() {
   const cityName = document.getElementById("cityName").value.trim();
 
@@ -7,7 +6,6 @@ function searchWeather() {
     return;
   }
 
-  // Show loading state (check if element exists)
   const weatherResults = document.getElementById("weatherResults");
   if (weatherResults) {
     weatherResults.style.display = "none";
@@ -24,24 +22,19 @@ function searchWeather() {
 
       console.log("Weather Data:", data);
       
-      // Display all weather data
       displayWeatherData(data);
       
-      // Fetch country data
       fetchCountryData(data.location.country);
       
-      // Show results (check if element exists)
       const weatherResults = document.getElementById("weatherResults");
       if (weatherResults) {
         weatherResults.style.display = "block";
         
-        // Smooth scroll to results
         setTimeout(() => {
           weatherResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }, 100);
       }
       
-      // Set background by weather condition
       setBackgroundByWeather(data.current.condition.text, data.current.is_day);
     })
     .catch(error => {
@@ -50,9 +43,7 @@ function searchWeather() {
     });
 }
 
-// Display All Weather Data
 function displayWeatherData(data) {
-  // Helper function to safely set element content
   const setElement = (id, content) => {
     const el = document.getElementById(id);
     if (el) el.textContent = content;
@@ -65,7 +56,6 @@ function displayWeatherData(data) {
   
   const { location, current } = data;
   
-  // Location Information
   setElement("cityName-display", location.name);
   setElement("location-details", `${location.region}, ${location.country}`);
   setElement("localTime", new Date(location.localtime).toLocaleString('en-US', {
@@ -77,13 +67,11 @@ function displayWeatherData(data) {
     minute: '2-digit'
   }));
   
-  // Main Weather
   setHTML("weatherIcon", `<img src="https:${current.condition.icon}" alt="${current.condition.text}">`);
   setElement("conditionText", current.condition.text);
   setElement("temperature", `${Math.round(current.temp_c)}°C`);
   setElement("feelsLike", `${Math.round(current.feelslike_c)}°C`);
   
-  // Weather Details
   setElement("windSpeed", `${current.wind_kph} km/h`);
   setElement("windDir", `${current.wind_dir} | ${current.wind_degree}°`);
   setElement("humidity", `${current.humidity}%`);
@@ -93,12 +81,10 @@ function displayWeatherData(data) {
   setElement("uv", getUVLevel(current.uv));
   setElement("precip", `${current.precip_mm} mm`);
   
-  // Calculate dew point (approximation formula)
   const dewPoint = calculateDewPoint(current.temp_c, current.humidity);
   setElement("dewpoint", `${dewPoint}°C`);
 }
 
-// Calculate Dew Point
 function calculateDewPoint(temp, humidity) {
   const a = 17.27;
   const b = 237.7;
@@ -107,7 +93,6 @@ function calculateDewPoint(temp, humidity) {
   return Math.round(dewPoint * 10) / 10;
 }
 
-// Get UV Level Description
 function getUVLevel(uv) {
   if (uv <= 2) return `${uv} - Low`;
   if (uv <= 5) return `${uv} - Moderate`;
@@ -116,7 +101,6 @@ function getUVLevel(uv) {
   return `${uv} - Extreme`;
 }
 
-// Fetch Country Data
 function fetchCountryData(countryName) {
   fetch(`https://restcountries.com/v3.1/name/${countryName}`)
     .then(res => res.json())
@@ -130,9 +114,7 @@ function fetchCountryData(countryName) {
     });
 }
 
-// Display Country Data
 function displayCountryData(country) {
-  // Helper function to safely set element content
   const setElement = (id, content) => {
     const el = document.getElementById(id);
     if (el) el.textContent = content;
@@ -143,16 +125,13 @@ function displayCountryData(country) {
     if (el) el.innerHTML = html;
   };
   
-  // Flag
   if (country.flags && country.flags.png) {
     setHTML("countryFlag", `<img src="${country.flags.png}" alt="${country.name.common} flag">`);
   }
   
-  // Main Info
   setElement("countryName", country.name.common || "-");
   setElement("countryCapital", (country.capital && country.capital[0]) ? `Capital: ${country.capital[0]}` : "No capital information");
   
-  // Details
   setElement("officialName", country.name.official || "-");
   setElement("languages", country.languages ? Object.values(country.languages).join(", ") : "-");
   setElement("population", country.population ? country.population.toLocaleString() : "-");
@@ -161,7 +140,6 @@ function displayCountryData(country) {
   setElement("timezoneCountry", (country.timezones && country.timezones[0]) || "-");
 }
 
-// Set Background by Weather
 function setBackgroundByWeather(condition, isDay) {
   const conditionText = condition.toLowerCase();
   let weatherKey = "sunny";
@@ -173,18 +151,17 @@ function setBackgroundByWeather(condition, isDay) {
   } else if (conditionText.includes("snow") || conditionText.includes("blizzard") || conditionText.includes("sleet")) {
     weatherKey = "snowy";
   } else if (conditionText.includes("thunder") || conditionText.includes("storm")) {
-    weatherKey = "stormy";
+    weatherKey = "rainy"; // Fallback to rainy since stormy.mp4 doesn't exist
   } else if (conditionText.includes("clear") || conditionText.includes("sunny")) {
-    weatherKey = isDay ? "sunny" : "night";
+    weatherKey = isDay ? "sunny" : "cloudy"; // Fallback to cloudy for night
   } else if (isDay === 0) {
-    weatherKey = "night";
+    weatherKey = "cloudy"; // Fallback to cloudy for night
   }
 
   console.log("Setting weather background:", weatherKey);
   activateVideo(weatherKey);
 }
 
-// Activate Video Background
 function activateVideo(weatherKey) {
   const videos = document.querySelectorAll("#bg-videos video");
   
@@ -199,22 +176,13 @@ function activateVideo(weatherKey) {
   });
 }
 
-// Initialize on page load
 document.addEventListener("DOMContentLoaded", function() {
-  // Set default background
   activateVideo("sunny");
   
-  // Clear input on load
   document.getElementById("cityName").value = "";
   
-  // Optional: Load a default city
-  // setTimeout(() => {
-  //   document.getElementById("cityName").value = "London";
-  //   searchWeather();
-  // }, 500);
 });
 
-// Allow Enter key to search
 document.getElementById("cityName")?.addEventListener("keypress", function(event) {
   if (event.key === "Enter") {
     searchWeather();

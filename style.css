@@ -16,7 +16,7 @@ body {
   min-height: 100vh;
   padding: 30px 20px;
   font-family: 'Poppins', sans-serif !important;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: transparent;
   overflow-x: hidden;
 }
 
@@ -41,6 +41,11 @@ body {
   visibility: hidden;
   transition: opacity 1.2s ease-in-out, visibility 0.3s;
   filter: brightness(0.8) saturate(1.2);
+}
+
+#bg-videos video.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* ========== CONTAINER ========== */
