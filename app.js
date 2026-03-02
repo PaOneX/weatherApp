@@ -52,7 +52,7 @@ function searchWeather() {
 
 // Display All Weather Data
 function displayWeatherData(data) {
-  conHelper function to safely set element content
+  // Helper function to safely set element content
   const setElement = (id, content) => {
     const el = document.getElementById(id);
     if (el) el.textContent = content;
@@ -62,6 +62,8 @@ function displayWeatherData(data) {
     const el = document.getElementById(id);
     if (el) el.innerHTML = html;
   };
+  
+  const { location, current } = data;
   
   // Location Information
   setElement("cityName-display", location.name);
@@ -93,10 +95,7 @@ function displayWeatherData(data) {
   
   // Calculate dew point (approximation formula)
   const dewPoint = calculateDewPoint(current.temp_c, current.humidity);
-  setElement("dewpoint", `${dewPoint}°C`)
-  // Calculate dew point (approximation formula)
-  const dewPoint = calculateDewPoint(current.temp_c, current.humidity);
-  document.getElementById("dewpoint").textContent = `${dewPoint}°C`;
+  setElement("dewpoint", `${dewPoint}°C`);
 }
 
 // Calculate Dew Point
@@ -127,7 +126,13 @@ function fetchCountryData(countryName) {
       }
     })
     .catch(error => {
-     Helper function to safely set element content
+      console.error("Error fetching country data:", error);
+    });
+}
+
+// Display Country Data
+function displayCountryData(country) {
+  // Helper function to safely set element content
   const setElement = (id, content) => {
     const el = document.getElementById(id);
     if (el) el.textContent = content;
@@ -153,18 +158,7 @@ function fetchCountryData(countryName) {
   setElement("population", country.population ? country.population.toLocaleString() : "-");
   setElement("regionCountry", country.region || "-");
   setElement("currency", country.currencies ? Object.keys(country.currencies).join(", ") + ` (${Object.values(country.currencies)[0]?.name || ""})` : "-");
-  setElement("timezoneCountry", (country.timezones && country.timezones[0]) || "-")
-  // Main Info
-  document.getElementById("countryName").textContent = country.name.common || "-";
-  document.getElementById("countryCapital").textContent = (country.capital && country.capital[0]) ? `Capital: ${country.capital[0]}` : "No capital information";
-  
-  // Details
-  document.getElementById("officialName").textContent = country.name.official || "-";
-  document.getElementById("languages").textContent = country.languages ? Object.values(country.languages).join(", ") : "-";
-  document.getElementById("population").textContent = country.population ? country.population.toLocaleString() : "-";
-  document.getElementById("regionCountry").textContent = country.region || "-";
-  document.getElementById("currency").textContent = country.currencies ? Object.keys(country.currencies).join(", ") + ` (${Object.values(country.currencies)[0]?.name || ""})` : "-";
-  document.getElementById("timezoneCountry").textContent = (country.timezones && country.timezones[0]) || "-";
+  setElement("timezoneCountry", (country.timezones && country.timezones[0]) || "-");
 }
 
 // Set Background by Weather
@@ -196,23 +190,13 @@ function activateVideo(weatherKey) {
   
   videos.forEach(video => {
     if (video.dataset.weather === weatherKey) {
-  const cityInput = document.getElementById("cityName");
-  if (cityInput) {
-    cityInput.value = "";
-    
-    // Allow Enter key to search
-    cityInput.addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        searchWeather();
-      }
-    });
-  }
-  
-  // Optional: Load a default city
-  // setTimeout(() => {
-  //   if (cityInput) cityInput.value = "London";
-  //   searchWeather();
-  // }, 500););
+      video.classList.add("active");
+      video.play().catch(err => console.log("Video play error:", err));
+    } else {
+      video.classList.remove("active");
+      video.pause();
+    }
+  });
 }
 
 // Initialize on page load
